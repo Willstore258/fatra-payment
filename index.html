@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FATRA PAYMENT</title>
+<style>
+  :root {
+    --bg: #0f0f13;
+    --card: #1a1a22;
+    --text: #f0f0f0;
+    --muted: #9a9aa8;
+    --accent: #00c9a7;
+    --accent2: #ff6b6b;
+    --border: #2a2a35;
+    --btn: #252530;
+    --shadow: rgba(0,0,0,0.5);
+  }
+  [data-theme="light"] {
+    --bg: #f2f4f8;
+    --card: #ffffff;
+    --text: #1a1a22;
+    --muted: #666;
+    --accent: #009e84;
+    --accent2: #e04a4a;
+    --border: #dde0e8;
+    --btn: #e8ebf2;
+    --shadow: rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    transition: background .3s, color .3s;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ===== WELCOME ===== */
+  #welcome {
+    text-align: center;
+    animation: fadeIn .8s ease;
+    padding: 20px;
+  }
+  #welcome h1 {
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.4;
+    background: linear-gradient(90deg, var(--accent), #5ee7c4, var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #welcome p { margin-top: 10px; color: var(--muted); font-size: .95rem; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== PANEL KONTEN ===== */
+  #panel {
+    display: none;
+    width: 100%;
+    max-width: 480px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 25px 20px;
+    box-shadow: 0 10px 40px var(--shadow);
+    animation: slideUp .35s ease;
+    text-align: center;
+    margin-top: 10px;
+  }
+  #panel.active { display: block; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  #panel h2 {
+    font-size: 1.3rem;
+    margin-bottom: 18px;
+    color: var(--accent);
+  }
+
+  .nomor-box {
+    background: var(--btn);
+    border: 1px dashed var(--accent);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    word-break: break-all;
+  }
+
+  .copy-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform .15s, filter .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .copy-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  .copy-btn:active { transform: scale(.97); }
+
+  .qris-img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 14px;
+    border: 3px solid var(--accent);
+    background: #fff;
+    padding: 8px;
+    margin: 0 auto 10px;
+    display: block;
+  }
+  .qris-empty {
+    padding: 30px 15px;
+    background: var(--btn);
+    border-radius: 14px;
+    color: var(--muted);
+    font-size: .9rem;
+    border: 1px dashed var(--border);
+  }
+
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #25D366;
+    color: #fff;
+    text-decoration: none;
+    padding: 14px 24px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-top: 12px;
+    transition: transform .15s, filter .2s;
+    box-shadow: 0 6px 20px rgba(37,211,102,.35);
+  }
+  .wa-btn:hover { filter: brightness(1.08); transform: translateY(-2px); }
+  .wa-num { display: block; margin-top: 10px; color: var(--muted); font-size: .9rem; }
+
+  /* ===== RULES ===== */
+  #rules {
+    width: 100%;
+    max-width: 480px;
+    margin-top: 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 40px var(--shadow);
+  }
+  #rules h3 {
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+    color: var(--accent2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  #rules ul { list-style: none; }
+  #rules li {
+    position: relative;
+    padding: 8px 0 8px 26px;
+    color: var(--muted);
+    font-size: .92rem;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--border);
+  }
+  #rules li:last-child { border-bottom: none; }
+  #rules li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  footer {
+    margin-top: 22px;
+    color: var(--muted);
+    font-size: .8rem;
+    text-align: center;
+    padding-bottom: 40px;
+  }
+
+  /* ===== TEMA TOGGLE ===== */
+  #themeToggle {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 60;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px var(--shadow);
+    transition: transform .2s;
+  }
+  #themeToggle:hover { transform: scale(1.1) rotate(15deg); }
+
+  /* ============================================
+     MENU POJOK KIRI ATAS  ← DIUBAH
+     ============================================ */
+  #menuWrap {
+    position: fixed;
+    top: 15px;          /* ← dari bottom ke top */
+    left: 20px;
+    z-index: 50;
+  }
+  #menuBtn {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    border: none;
+    background: linear-gradient(135deg, var(--accent), #009e84);
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(0,201,167,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .25s;
+  }
+  #menuBtn:hover { transform: scale(1.08); }
+  #menuBtn.open { transform: rotate(135deg); }
+
+  /* Menu terbuka ke BAWAH (karena tombol di atas) */
+  #menuList {
+    position: absolute;
+    top: 70px;          /* ← dari bottom:70px ke top:70px */
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);   /* ← dari +10px ke -10px */
+    transition: all .25s ease;
+  }
+  #menuList.open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 18px;
+    border-radius: 14px;
+    font-size: .92rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 5px 18px var(--shadow);
+    transition: all .2s;
+    white-space: nowrap;
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  #menuList.open .menu-item { transform: translateX(0); opacity: 1; }
+  #menuList.open .menu-item:nth-child(1) { transition-delay: .02s; }
+  #menuList.open .menu-item:nth-child(2) { transition-delay: .06s; }
+  #menuList.open .menu-item:nth-child(3) { transition-delay: .10s; }
+  #menuList.open .menu-item:nth-child(4) { transition-delay: .14s; }
+  #menuList.open .menu-item:nth-child(5) { transition-delay: .18s; }
+  .menu-item:hover {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    transform: translateX(4px) !important;
+  }
+  .menu-item .ic { font-size: 1.1rem; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    top: 90px;             /* ← pindah ke atas biar gak ketutup menu */
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: var(--accent);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: .9rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s;
+    z-index: 100;
+    box-shadow: 0 8px 25px rgba(0,201,167,.4);
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- TEMA TOGGLE -->
+<button id="themeToggle" title="Ganti Tema">🌙</button>
+
+<!-- WELCOME -->
+<div id="welcome">
+  <h1>Selamat Datang Di FATRA PAYMENT 👋</h1>
+  <p>Silakan pilih menu pembayaran di pojok kiri atas (:)</p>
+</div>
+
+<!-- PANEL KONTEN -->
+<div id="panel"></div>
+
+<!-- RULES -->
+<div id="rules">
+  <h3>📋 Cara Transfer</h3>
+  <ul>
+    <li>Transfer tinggal pilih di: Dana, Gopay, Ovo, Qris</li>
+    <li>Sudah transfer? Bawa bukti transfer ke Admin Fatra</li>
+  </ul>
+</div>
+
+<footer>© Fatra Payment - All Rights Reserved 2026/2027</footer>
+
+<!-- MENU POJOK KIRI ATAS -->
+<div id="menuWrap">
+  <div id="menuList">
+    <div class="menu-item" data-menu="dana"><span class="ic">💙</span> Dana</div>
+    <div class="menu-item" data-menu="gopay"><span class="ic">💚</span> Gopay</div>
+    <div class="menu-item" data-menu="ovo"><span class="ic">💜</span> Ovo</div>
+    <div class="menu-item" data-menu="qris"><span class="ic">📷</span> Qris</div>
+    <div class="menu-item" data-menu="admin"><span class="ic">👤</span> Admin FATRA</div>
+  </div>
+  <button id="menuBtn">+</button>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+/* =========================================================
+   KONFIGURASI — GANTI DATA DI BAWAH INI
+   ========================================================= */
+const CONFIG = {
+  dana:  "081243219604",          // ← ganti nomor Dana
+  gopay: "belum tersedia",          // ← ganti nomor Gopay
+  ovo:   "belum tersedia",          // ← ganti nomor Ovo
+  qris:  "https://anabot.my.id/uploads/image/c33f10d72515.jpg", // ← ganti link URL gambar QRIS
+  adminWa: "wa.me/6289636633462"        // nomor WA admin (tanpa +)
+};
+
+/* =========================================================
+   ELEMEN
+   ========================================================= */
+const panel      = document.getElementById('panel');
+const welcome    = document.getElementById('welcome');
+const menuBtn    = document.getElementById('menuBtn');
+const menuList   = document.getElementById('menuList');
+const toast      = document.getElementById('toast');
+const themeToggle = document.getElementById('themeToggle');
+
+/* =========================================================
+   TEMA
+   ========================================================= */
+const savedTheme = localStorage.getItem('fatra-theme') || 'dark';
+document.documentElement.setAttribute('data-theme', savedTheme);
+themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+themeToggle.addEventListener('click', () => {
+  const now = document.documentElement.getAttribute('data-theme');
+  const next = now === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('fatra-theme', next);
+  themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+});
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+let toastTimer;
+function showToast(msg) {
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+/* =========================================================
+   MENU TOGGLE
+   ========================================================= */
+menuBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  menuBtn.classList.toggle('open');
+  menuList.classList.toggle('open');
+});
+
+document.addEventListener('click', (e) => {
+  if (!document.getElementById('menuWrap').contains(e.target)) {
+    menuBtn.classList.remove('open');
+    menuList.classList.remove('open');
+  }
+});
+
+/* =========================================================
+   COPY KE CLIPBOARD
+   ========================================================= */
+function copyText(text, label) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`✅ ${label} berhasil disalin!`);
+    }).catch(() => fallbackCopy(text, label));
+  } else {
+    fallbackCopy(text, label);
+  }
+}
+function fallbackCopy(text, label) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast(`✅ ${label} berhasil disalin!`);
+  } catch {
+    showToast('❌ Gagal menyalin');
+  }
+  document.body.removeChild(ta);
+}
+
+/* =========================================================
+   RENDER PANEL
+   ========================================================= */
+function renderPayment(type, title, nomor) {
+  panel.innerHTML = `
+    <h2>💳 Payment ${title}</h2>
+    <div class="nomor-box" id="nomorText">${nomor}</div>
+    <button class="copy-btn" id="copyBtn">📋 Salin No ${title}</button>
+  `;
+  panel.classList.add('active');
+  welcome.style.display = 'none';
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    copyText(nomor, `No ${title}`);
+  });
+}
+
+function renderQris() {
+  const url = CONFIG.qris;
+  let imgHtml;
+  if (url && /^https?:\/\//i.test(url)) {
+    imgHtml = `<img src="${url}" alt="QRIS Fatra Payment" class="qris-img"
+      onerror="this.outerHTML='<div class=\\'qris-empty\\'>⚠️ Gambar QRIS gagal dimuat.<br>Periksa link URL.</div>'">`;
+  } else {
+    imgHtml = `<div class="qris-empty">⚠️ Link gambar QRIS belum diatur.<br>Silakan isi URL gambar di bagian CONFIG.</div>`;
+  }
+  panel.innerHTML = `
+    <h2>📷 Payment QRIS</h2>
+    ${imgHtml}
+    <p style="color:var(--muted);font-size:.85rem;margin-top:10px;">Scan QRIS di atas untuk melakukan pembayaran</p>
+  `;
+  panel.classList.add('active');
+  welcome.style.display = 'none';
+}
+
+function renderAdmin() {
+  const wa = CONFIG.adminWa;
+  panel.innerHTML = `
+    <h2>👤 Admin FATRA</h2>
+    <p style="font-size:1.05rem;font-weight:600;margin-bottom:4px;">Chat WhatsApp ⬇️😉👋</p>
+    <a class="wa-btn" href="https://wa.me/${wa}" target="_blank" rel="noopener">
+      💬 Chat Admin WhatsApp
+    </a>
+    <span class="wa-num">+${wa}</span>
+  `;
+  panel.classList.add('active');
+  welcome.style.display = 'none';
+}
+
+/* =========================================================
+   HANDLER MENU
+   ========================================================= */
+menuList.querySelectorAll('.menu-item').forEach(item => {
+  item.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const menu = item.dataset.menu;
+
+    if (menu === 'dana')  renderPayment('dana',  'Dana',  CONFIG.dana);
+    if (menu === 'gopay') renderPayment('gopay', 'Gopay', CONFIG.gopay);
+    if (menu === 'ovo')   renderPayment('ovo',   'Ovo',   CONFIG.ovo);
+    if (menu === 'qris')  renderQris();
+    if (menu === 'admin') renderAdmin();
+
+    menuBtn.classList.remove('open');
+    menuList.classList.remove('open');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+</script>
+</body>
+</html>
